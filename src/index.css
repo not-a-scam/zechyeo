@@ -1,0 +1,92 @@
+@import url("https://fonts.googleapis.com/css2?family=VT323&display=swap");
+@import "tailwindcss";
+
+:root {
+  font-family: "VT323", monospace;
+  background-color: #000;
+  color: #33ff33;
+}
+
+#root {
+  width: 100%;
+  height: 100dvh;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #000;
+}
+
+/* Force dark mode for terminal aesthetic */
+@media (prefers-color-scheme: light) {
+  :root {
+    background-color: #000;
+    color: #33ff33;
+  }
+}
+
+@theme {
+  --font-body: VT323, monospace;
+  --color-terminal-green: #33ff33;
+  --color-terminal-cyan: #00ffff;
+  --color-terminal-dark: #003300;
+
+  --animate-scanline: scanlineScroll 10s linear infinite;
+  --animate-terminal-blink: blink 1s step-end infinite;
+
+  @keyframes scanlineScroll {
+    from {
+      background-position: 0 0;
+    }
+    to {
+      background-position: 0 100%;
+    }
+  }
+  @keyframes blink {
+    from,
+    to {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+}
+
+@utility retro-text {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 1;
+  text-shadow:
+    1.5px 0 1px rgba(255, 0, 0, 0.5),
+    -1.5px 0 1px rgba(0, 0, 255, 0.5),
+    0 0 10px rgba(51, 255, 51, 0.4);
+}
+
+@utility crt-overlay {
+  @apply pointer-events-none absolute inset-0 z-2;
+  background:
+    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+    linear-gradient(
+      90deg,
+      rgba(255, 0, 0, 0.06),
+      rgba(0, 255, 0, 0.02),
+      rgba(0, 0, 255, 0.06)
+    );
+  background-size:
+    100% 2px,
+    3px 100%;
+}
+
+@utility scanlines {
+  @apply pointer-events-none absolute inset-0 z-10 animate-scanline;
+  background: linear-gradient(
+    to bottom,
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.1) 50%
+  );
+  background-size: 100% 4px;
+}
