@@ -69,6 +69,7 @@ const Terminal: React.FC = () => {
     }, [TIMINGS.INITIAL_DELAY]);
 
     // Name Typing (Figlet)
+    const skipRef = useRef(false);
     useEffect(() => {
         if (step !== 'NAME') return;
 
@@ -77,7 +78,18 @@ const Terminal: React.FC = () => {
 
         const typeName = () => {
             if (isCancelled) return;
-            
+            if (skipRef.current) {
+                figlet.text(targetName, { font: "Modular" }, (err, data) => {
+                    if (err) {
+                        console.error('Figlet error:', err);
+                        setName(targetName);
+                        return;
+                    } 
+                    if (!isCancelled && data) setName(data);
+                    setStep('TAGLINE');
+                });
+                return;
+            }
             const currentText = targetName.slice(0, nameIndex);
             figlet.text(currentText, { font: "Modular" }, (err, data) => {
                 if (err) {
@@ -85,7 +97,6 @@ const Terminal: React.FC = () => {
                     return;
                 }
                 if (data) setName(data);
-                
                 if (nameIndex < targetName.length) {
                     nameIndex++;
                     setTimeout(typeName, TYPING_SPEEDS.NAME);
@@ -128,6 +139,12 @@ const Terminal: React.FC = () => {
 
         let index = 0;
         const interval = setInterval(() => {
+            if (skipRef.current) {
+                setFn(target);
+                clearInterval(interval);
+                setTimeout(() => setStep(nextStep), 0);
+                return;
+            }
             setFn(target.slice(0, index + 1));
             index++;
             if (index >= target.length) {
@@ -145,6 +162,12 @@ const Terminal: React.FC = () => {
 
         let count = 0;
         const interval = setInterval(() => {
+            if (skipRef.current) {
+                setVisibleOptionsCount(targetOptions.length);
+                clearInterval(interval);
+                setStep('COMPLETE');
+                return;
+            }
             count++;
             setVisibleOptionsCount(count);
             if (count >= targetOptions.length) {
@@ -195,7 +218,26 @@ const Terminal: React.FC = () => {
     return (
         <div 
             className="relative w-full h-dvh bg-black flex flex-col items-center justify-center overflow-hidden cursor-text p-4"
-            onClick={() => inputRef.current?.focus()}
+            onClick={() => {
+                if (step !== 'COMPLETE') {
+                    skipRef.current = true;
+                    // Generate the name ASCII art using figlet before setting
+                    figlet.text(targetName, { font: "Modular" }, (err, data) => {
+                        if (err) {
+                            console.error('Figlet error:', err);
+                            setName(targetName);
+                        }
+                        setName(data || targetName);
+                        setTagline(targetTagline);
+                        setDivider(dynamicDivider);
+                        setQuestion(targetQuestion);
+                        setVisibleOptionsCount(targetOptions.length);
+                        setStep('COMPLETE');
+                    });
+                } else {
+                    inputRef.current?.focus();
+                }
+            }}
         >
             {/* CRT Effects */}
             <div className="crt-overlay" />
