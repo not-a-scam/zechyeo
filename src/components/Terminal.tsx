@@ -1,5 +1,6 @@
 import figlet from 'figlet';
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { TERMINAL_CONTENT } from '../constants/terminalContent';
 
 type TerminalStep = 'IDLE' | 'NAME' | 'TAGLINE' | 'DIVIDER' | 'QUESTION' | 'OPTIONS' | 'COMPLETE';
@@ -13,6 +14,7 @@ const Terminal: React.FC = () => {
     const [question, setQuestion] = useState<string>("");
     const [visibleOptionsCount, setVisibleOptionsCount] = useState<number>(0);
     const [userInput, setUserInput] = useState<string>("");
+    const navigate = useNavigate();
     
     const inputRef = useRef<HTMLInputElement>(null);
     const { 
@@ -135,7 +137,7 @@ const Terminal: React.FC = () => {
         }, speed);
 
         return () => clearInterval(interval);
-    }, [step, targetTagline, targetQuestion, TYPING_SPEEDS, TIMINGS.STEP_PAUSE]);
+    }, [step, targetTagline, targetQuestion, dynamicDivider, TYPING_SPEEDS, TIMINGS.STEP_PAUSE]);
 
     // Options Appearing
     useEffect(() => {
@@ -163,9 +165,8 @@ const Terminal: React.FC = () => {
 
     const handleNavigate = useCallback((option: string) => {
         const path = `/${option.toLowerCase().replace(/\s+/g, '-')}`;
-        console.log(`Navigating to: ${path}`);
-        alert(`Navigating to ${option} page... (Implementation pending)`);
-    }, []);
+        navigate(path);
+    }, [navigate]);
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
@@ -205,11 +206,11 @@ const Terminal: React.FC = () => {
             
             <div className="flex flex-col items-center gap-4 md:gap-6 z-0 w-full max-w-4xl relative">
                 {/* Name printer */}
-                <div className="min-h-[80px] md:min-h-[120px] flex items-center justify-center w-full overflow-hidden">
+                <div className="min-h-20 md:min-h-30 flex items-center justify-center w-full overflow-hidden">
                     <pre className="text-terminal-green whitespace-pre leading-none tracking-tighter text-[clamp(6px,1.5vw,14px)] md:text-[clamp(10px,2vw,18px)] origin-center scale-[0.85] md:scale-100">
                         {name}
                         {isStepActive('NAME') && (
-                            <span className="animate-terminal-blink ml-1 border-r-[0.5em] border-terminal-green">&nbsp;</span>
+                            <span className="animate-terminal-blink ml-1 border-l-[0.5em] border-terminal-green">&nbsp;</span>
                         )}
                     </pre>
                 </div>
@@ -220,7 +221,7 @@ const Terminal: React.FC = () => {
                         <p className="text-terminal-green text-sm md:text-lg tracking-wider text-center whitespace-normal md:whitespace-nowrap">
                             {tagline}
                             {isStepActive('TAGLINE') && (
-                                <span className="animate-terminal-blink ml-1 border-r-2 border-terminal-green">&nbsp;</span>
+                                <span className="animate-terminal-blink ml-1 border-l-2 border-terminal-green">&nbsp;</span>
                             )}
                         </p>
                     </div>
@@ -232,7 +233,7 @@ const Terminal: React.FC = () => {
                         <p className="text-terminal-green text-lg md:text-xl tracking-[0.3em] md:tracking-[0.5em] text-center break-all">
                             {divider}
                             {isStepActive('DIVIDER') && (
-                                <span className="animate-terminal-blink ml-1 border-r-2 border-terminal-green">&nbsp;</span>
+                                <span className="animate-terminal-blink ml-1 border-l-2 border-terminal-green">&nbsp;</span>
                             )}
                         </p>
                     </div>
@@ -244,7 +245,7 @@ const Terminal: React.FC = () => {
                         <p className="text-terminal-green/90 text-xl md:text-3xl text-center tracking-tight leading-tight">
                             {question}
                             {isStepActive('QUESTION') && (
-                                <span className="animate-terminal-blink ml-1 border-r-2 border-terminal-green">&nbsp;</span>
+                                <span className="animate-terminal-blink ml-1 l-2 border-terminal-green">&nbsp;</span>
                             )}
                         </p>
                     </div>
@@ -253,7 +254,7 @@ const Terminal: React.FC = () => {
                 {/* Options printer */}
                 {(isStepDone('QUESTION') || isStepActive('OPTIONS') || isStepActive('COMPLETE')) && (
                     <div className="flex flex-col items-center gap-4">
-                        <div className="flex flex-row flex-wrap items-center justify-center gap-x-6 md:gap-x-12 gap-y-2 md:gap-y-4 min-h-[60px] px-4">
+                        <div className="flex flex-row flex-wrap items-center justify-center gap-x-6 md:gap-x-12 gap-y-2 md:gap-y-4 min-h-15 px-4">
                             {targetOptions.slice(0, visibleOptionsCount).map((option, index) => (
                                 <button
                                     key={option}
@@ -263,7 +264,7 @@ const Terminal: React.FC = () => {
                                     <span className="mr-1 md:mr-2 text-terminal-cyan">{index + 1}.</span>
                                     <span className="decoration-terminal-cyan">{option}</span>
                                     {isStepActive('OPTIONS') && index === visibleOptionsCount - 1 && (
-                                        <span className="animate-terminal-blink ml-2 border-r-2 border-terminal-cyan">&nbsp;</span>
+                                        <span className="animate-terminal-blink ml-2 border-l-2 border-terminal-cyan">&nbsp;</span>
                                     )}
                                 </button>
                             ))}
@@ -279,9 +280,9 @@ const Terminal: React.FC = () => {
 
                 {/* Input */}
                 {isStepActive('COMPLETE') && (
-                    <div className="flex items-center gap-2 md:gap-3 text-lg md:text-2xl text-terminal-green w-full justify-center mt-4 px-4 overflow-hidden">
+                    <div className="flex items-center gap-2 md:gap-3 text-lg md:text-2xl text-terminal-green w-full justify-start mt-4 px-2 overflow-hidden">
                         <span className="opacity-50 tracking-widest shrink-0">&gt;</span>
-                        <div className="relative flex-1 max-w-[500px]">
+                        <div className="relative flex-1 max-w-125">
                             <input
                                 ref={inputRef}
                                 type="text"
@@ -295,7 +296,7 @@ const Terminal: React.FC = () => {
                             />
                             <span className="absolute left-0 top-0 pointer-events-none truncate whitespace-nowrap max-w-full">
                                 {userInput}
-                                <span className="animate-terminal-blink ml-0 border-r-2 border-terminal-green">&nbsp;</span>
+                                <span className="animate-terminal-blink ml-0 border-l-2 border-terminal-green">&nbsp;</span>
                             </span>
                         </div>
                     </div>
