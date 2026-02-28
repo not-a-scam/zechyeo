@@ -12,17 +12,17 @@ const Header: React.FC = () => {
         function updateBorder() {
             // Estimate characters per line based on window width and monospace font size (8px per char is a rough estimate)
             const charWidth = 8; // px per monospace char (adjust if needed)
-            const minChars = 30;
-            const maxChars = 200;
-            const chars = Math.max(minChars, Math.min(maxChars, Math.floor(window.innerWidth / charWidth)));
-            setAsciiBorder('+' + '-'.repeat(chars - 12) + '+');
+            const chars = Math.floor(window.innerWidth / charWidth);
+
+            const scaleFactor = 0.008;
+
+            console.log(`${12/window.innerWidth}`);
+            setAsciiBorder('+' + '-'.repeat(chars - Math.floor(window.outerWidth * scaleFactor)) + '+');
         }
         updateBorder();
         window.addEventListener('resize', updateBorder);
         return () => window.removeEventListener('resize', updateBorder);
     });
-
-    // ...existing code...
 
     return (
         <>
@@ -43,14 +43,18 @@ const Header: React.FC = () => {
                     </pre>
                 </button>
                 <nav className="flex gap-6 md:gap-10">
-                    {navLinks.map(link => (
-                        <a
-                            key={link.label}
-                            href={link.href}
-                            className="text-terminal-cyan text-base md:text-lg hover:underline hover:text-terminal-green transition-colors"
-                        >
-                            {link.label}
-                        </a>
+                    {navLinks.map((link, idx) => (
+                        <div className="flex flex-row items-center gap-6 md:gap-10" key={link.label}>
+                            <a
+                                href={link.href}
+                                className="text-terminal-cyan text-base md:text-2xl hover:underline hover:text-terminal-green transition-colors"
+                            >
+                                {link.label}
+                            </a>
+                            {idx < navLinks.length - 1 && (
+                                <span className="h-6 w-px bg-terminal-green mx-2 inline-block" aria-hidden="true"></span>
+                            )}
+                        </div>
                     ))}
                 </nav>
             </div>
