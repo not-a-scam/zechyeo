@@ -1,0 +1,12 @@
+@layer utilities {
+  .chromatic-aberration {
+    position: relative;
+    transition: color 0.2s;
+  }
+  .chromatic-aberration:hover .chromatic-text {
+    text-shadow:
+      2px 0 0 #ff0040,
+      -2px 0 0 #00eaff;
+    color: #fff;
+  }
+}
