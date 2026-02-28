@@ -1,21 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import figlet from 'figlet';
+import React from 'react';
+import { useFigletText } from '../hooks/useFigletText';
 import { contactLinks } from '../constants/contactContents';
 import Header from './Header';
 
 const Contact: React.FC = () => {
-
-    const [contactMeAsciiArt, setContactMeAsciiArt] = useState('');
-
-    useEffect(() => {
-        figlet.text('contact me', { font: 'Modular' }, (err, data) => {
-            if (err) {
-                console.error('Error generating ASCII art:', err);
-                return;
-            }
-            setContactMeAsciiArt(data?.toString() || 'Contact Me');
-        });
-    });
+    const contactMeAsciiArt = useFigletText('contact me', { font: 'Modular' });
 
     return (
         <div className="relative w-full min-h-dvh bg-black flex flex-col items-center justify-start overflow-hidden cursor-text p-0">

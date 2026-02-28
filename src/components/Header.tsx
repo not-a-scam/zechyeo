@@ -1,10 +1,10 @@
 import type React from "react";
 import { useEffect, useState } from "react";
-import figlet from 'figlet';
+import { useFigletText } from '../hooks/useFigletText';
 import { navLinks } from '../constants/headerConstants';
 
 const Header: React.FC = () => {
-    const [headerAsciiArt, setHeaderAsciiArt] = useState('');
+    const headerAsciiArt = useFigletText('zech yeo', { font: 'miniwi' });
     const [asciiBorder, setAsciiBorder] = useState('+-+');
 
     // Responsive ASCII border
@@ -22,15 +22,7 @@ const Header: React.FC = () => {
         return () => window.removeEventListener('resize', updateBorder);
     });
 
-    useEffect(() => {
-        figlet.text('zech yeo', { font: 'miniwi' }, (err, data) => {
-            if (err) {
-                console.error('Error generating ASCII art:', err);
-                return;
-            }
-            setHeaderAsciiArt(data?.toString() || 'zech yeo');
-        });
-    });
+    // ...existing code...
 
     return (
         <>

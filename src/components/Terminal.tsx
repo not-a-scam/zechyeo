@@ -1,13 +1,14 @@
-import figlet from 'figlet';
+import { useFigletText } from '../hooks/useFigletText';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TERMINAL_CONTENT } from '../constants/terminalContent';
+import figlet from 'figlet';
 
 type TerminalStep = 'IDLE' | 'NAME' | 'TAGLINE' | 'DIVIDER' | 'QUESTION' | 'OPTIONS' | 'COMPLETE';
 
 const Terminal: React.FC = () => {
     const [step, setStep] = useState<TerminalStep>('IDLE');
-    const [name, setName] = useState<string>("");
+    const [name, setName] = useState<string>(""); 
     const [tagline, setTagline] = useState<string>("");
     const [divider, setDivider] = useState<string>("");
     const [dynamicDivider, setDynamicDivider] = useState<string>("");
@@ -28,8 +29,6 @@ const Terminal: React.FC = () => {
 
     // Initialize figlet and calculate dynamic divider
     useEffect(() => {
-        figlet.defaults({ fontPath: "/fonts" });
-        
         const calculateDivider = () => {
             const width = window.innerWidth;
             const padding = 64; // px-8 (32px * 2)
@@ -70,26 +69,18 @@ const Terminal: React.FC = () => {
 
     // Name Typing (Figlet)
     const skipRef = useRef(false);
+    const figletName = useFigletText(targetName, { font: 'Modular' });
     useEffect(() => {
         if (step !== 'NAME') return;
-
+        if (skipRef.current) {
+            setName(figletName || targetName);
+            setStep('TAGLINE');
+            return;
+        }
         let nameIndex = 0;
         let isCancelled = false;
-
         const typeName = () => {
             if (isCancelled) return;
-            if (skipRef.current) {
-                figlet.text(targetName, { font: "Modular" }, (err, data) => {
-                    if (err) {
-                        console.error('Figlet error:', err);
-                        setName(targetName);
-                        return;
-                    } 
-                    if (!isCancelled && data) setName(data);
-                    setStep('TAGLINE');
-                });
-                return;
-            }
             const currentText = targetName.slice(0, nameIndex);
             figlet.text(currentText, { font: "Modular" }, (err, data) => {
                 if (err) {
@@ -105,10 +96,9 @@ const Terminal: React.FC = () => {
                 }
             });
         };
-
         typeName();
         return () => { isCancelled = true; };
-    }, [step, targetName, TYPING_SPEEDS.NAME, TIMINGS.NAME_FINISH_PAUSE]);
+    }, [step, targetName, TYPING_SPEEDS.NAME, TIMINGS.NAME_FINISH_PAUSE, figletName]);
 
     // Generic Typewriter for Tagline, Divider, and Question
     useEffect(() => {
@@ -221,19 +211,13 @@ const Terminal: React.FC = () => {
             onClick={() => {
                 if (step !== 'COMPLETE') {
                     skipRef.current = true;
-                    // Generate the name ASCII art using figlet before setting
-                    figlet.text(targetName, { font: "Modular" }, (err, data) => {
-                        if (err) {
-                            console.error('Figlet error:', err);
-                            setName(targetName);
-                        }
-                        setName(data || targetName);
-                        setTagline(targetTagline);
-                        setDivider(dynamicDivider);
-                        setQuestion(targetQuestion);
-                        setVisibleOptionsCount(targetOptions.length);
-                        setStep('COMPLETE');
-                    });
+                    // Generate the name ASCII art using useFigletText before setting
+                    setName(figletName || targetName);
+                    setTagline(targetTagline);
+                    setDivider(dynamicDivider);
+                    setQuestion(targetQuestion);
+                    setVisibleOptionsCount(targetOptions.length);
+                    setStep('COMPLETE');
                 } else {
                     inputRef.current?.focus();
                 }
