@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFigletText } from '../hooks/useFigletText';
 import { contactLinks } from '../constants/contactContents';
-import Header from './Header';
+import Header from './NavBar';
 
 const Contact: React.FC = () => {
     const contactMeAsciiArt = useFigletText('contact me', { font: 'Modular' });
