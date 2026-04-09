@@ -20,7 +20,7 @@ const Contact: React.FC = () => {
             <div className="flex flex-col items-center gap-4 md:gap-6 z-0 w-full max-w-4xl relative pt-32 md:pt-36">
                 {/* ASCII Art Header (now below nav) */}
                 <div className="min-h-20 md:min-h-30 flex items-center justify-center w-full overflow-hidden">
-                    <pre className="text-yellow-300 whitespace-pre leading-none tracking-tighter text-[clamp(6px,1.5vw,14px)] md:text-[clamp(10px,2vw,18px)] origin-center scale-[0.85] md:scale-100  select-none">
+                    <pre className="text-terminal-cyan whitespace-pre leading-none tracking-tighter text-[clamp(6px,1.5vw,14px)] md:text-[clamp(10px,2vw,18px)] origin-center scale-[0.85] md:scale-100  select-none">
                         {contactMeAsciiArt}
                     </pre>
                 </div>

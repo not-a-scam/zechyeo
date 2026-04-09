@@ -14,7 +14,6 @@ const Terminal: React.FC = () => {
     const [dynamicDivider, setDynamicDivider] = useState<string>("");
     const [question, setQuestion] = useState<string>("");
     const [visibleOptionsCount, setVisibleOptionsCount] = useState<number>(0);
-    const [userInput, setUserInput] = useState<string>("");
     const navigate = useNavigate();
     
     const inputRef = useRef<HTMLInputElement>(null);
@@ -181,23 +180,6 @@ const Terminal: React.FC = () => {
         navigate(path);
     }, [navigate]);
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === 'Enter') {
-            const input = userInput.trim().toLowerCase();
-            const optionIndex = parseInt(input) - 1;
-            
-            if (!isNaN(optionIndex) && targetOptions[optionIndex]) {
-                handleNavigate(targetOptions[optionIndex]);
-            } else {
-                const matchedOption = targetOptions.find(opt => opt.toLowerCase() === input);
-                if (matchedOption) {
-                    handleNavigate(matchedOption);
-                }
-            }
-            setUserInput("");
-        }
-    };
-
     const isStepDone = (currentStep: TerminalStep) => {
         const steps: TerminalStep[] = ['IDLE', 'NAME', 'TAGLINE', 'DIVIDER', 'QUESTION', 'OPTIONS', 'COMPLETE'];
         return steps.indexOf(step) > steps.indexOf(currentStep);
@@ -296,35 +278,6 @@ const Terminal: React.FC = () => {
                             ))}
                         </div>
 
-                        {isStepActive('COMPLETE') && (
-                            <p className="text-terminal-green/60 text-[10px] md:text-sm italic tracking-widest animate-pulse mt-2 text-center px-4">
-                                or type out anything that comes to mind and let the LLM decide!
-                            </p>
-                        )}
-                    </div>
-                )}
-
-                {/* Input */}
-                {isStepActive('COMPLETE') && (
-                    <div className="flex items-center gap-2 md:gap-3 text-lg md:text-2xl text-terminal-green w-full justify-start mt-4 px-2 overflow-hidden">
-                        <span className="opacity-50 tracking-widest shrink-0">&gt;</span>
-                        <div className="relative flex-1 max-w-125">
-                            <input
-                                ref={inputRef}
-                                type="text"
-                                value={userInput}
-                                onChange={(e) => setUserInput(e.target.value)}
-                                onKeyDown={handleKeyDown}
-                                className="bg-transparent border-none outline-none text-terminal-green w-full caret-transparent"
-                                spellCheck="false"
-                                autoComplete="off"
-                                autoFocus
-                            />
-                            <span className="absolute left-0 top-0 pointer-events-none truncate whitespace-nowrap max-w-full">
-                                {userInput}
-                                <span className="animate-terminal-blink ml-0 border-l-2 border-terminal-green">&nbsp;</span>
-                            </span>
-                        </div>
                     </div>
                 )}
             </div>

@@ -1,10 +1,12 @@
 import React from 'react';
 import Header from './NavBar';
 import { useFigletText } from '../hooks/useFigletText';
+import ImageFrame from './ImageFrame';
 
 const AboutMe: React.FC = () => {
-
-    const aboutMeAsciiArt = useFigletText('about me', { font: 'Modular' });
+    const imagePath = "/assets/images/zech.webp";
+    const titleAsciiArt = useFigletText('Hi, I\'m', { font: 'Modular' });
+    const nameAsciiArt = useFigletText('Zech', { font: 'Modular' });
 
     return (
         <div className="relative w-full min-h-dvh bg-black flex flex-col items-center justify-start overflow-hidden cursor-text p-0">
@@ -17,18 +19,40 @@ const AboutMe: React.FC = () => {
             <Header />
 
             {/* Main Content (with padding for header) */}
-            <div className="flex flex-col items-center gap-4 md:gap-6 z-0 w-full max-w-4xl relative pt-32 md:pt-36">
-                <div className="min-h-20 md:min-h-30 flex items-center justify-center w-full overflow-hidden">
-                    <pre className="text-terminal-green whitespace-pre leading-none tracking-tighter text-[clamp(6px,1.5vw,14px)] md:text-[clamp(10px,2vw,18px)] origin-center scale-[0.85] md:scale-100  select-none">
-                        {aboutMeAsciiArt}
-                    </pre>
+            <div className="flex flex-col md:flex-row items-center md:items-start justify-center gap-8 md:gap-16 z-0 w-full max-w-7xl relative pt-32 md:pt-40 px-6 md:px-12">
+                
+                {/* Left Side: Text Content */}
+                <div className="flex-1 flex flex-col items-center md:items-start max-w-2xl">
+                    <div className="min-h-20 md:min-h-30 flex items-center justify-center md:justify-start w-full overflow-hidden mb-6">
+                        <div className="flex flex-row items-center origin-center md:origin-left scale-[0.50] md:scale-85">
+                            <pre className="text-terminal-green whitespace-pre leading-none tracking-tighter text-[clamp(6px,1.5vw,14px)] md:text-[clamp(10px,1.8vw,16px)] select-none">
+                                {titleAsciiArt}
+                            </pre>
+                            <pre className="text-terminal-purple whitespace-pre leading-none tracking-tighter text-[clamp(6px,1.5vw,14px)] md:text-[clamp(10px,1.8vw,16px)] select-none ml-4">
+                                {nameAsciiArt}
+                            </pre>
+                        </div>
+                    </div>
+
+                    <div>
+                        <p className="text-white text-center md:text-left text-lg md:text-2xl md:leading-relaxed tracking-wide">
+                            TLDR: I'm a guy who likes to code and make things.
+                        </p>
+                        <p className="mt-6 text-white text-center md:text-left text-lg md:text-2xl md:leading-relaxed tracking-wide">
+                            but the long story is that i've always liked making stuff and ive ended up gaining too many random but useful skills as part of that passion
+                        </p>
+                        <p className="mt-6 text-white text-center md:text-left text-lg md:text-2xl md:leading-relaxed tracking-wide">
+                            from electronics, to CAD, to 3d printing, to sewing, to coding, etc 
+                        </p>
+                    </div>
                 </div>
 
-                <div>
-                    <p className="text-white text-center text-sm md:text-2xl tracking-wide px-4">
-                        I'm Zech, a passionate software engineer with a love for crafting elegant solutions to complex problems. With a background in full-stack development, I enjoy working on projects that challenge me to learn and grow. When I'm not coding, you can find me exploring the latest tech trends, gaming, or indulging in my love for sci-fi. I'm always eager to connect with fellow developers and collaborate on exciting projects!
-                    </p>
-                </div>
+                {/* Right Side: Retro Window with Image */}
+                <ImageFrame 
+                    src={imagePath} 
+                    alt="Zech" 
+                    className="mt-8 md:mt-0"
+                />
             </div>
         </div>
     );

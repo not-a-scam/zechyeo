@@ -47,7 +47,7 @@ const Header: React.FC = () => {
                         <div className="flex flex-row items-center gap-6 md:gap-10" key={link.label}>
                             <a
                                 href={link.href}
-                                className="text-terminal-cyan text-base md:text-2xl hover:underline hover:text-terminal-green transition-colors"
+                                className="text-terminal-green text-base md:text-2xl hover:underline hover:text-terminal-green transition-colors"
                             >
                                 {link.label}
                             </a>
