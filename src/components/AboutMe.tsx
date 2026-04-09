@@ -44,6 +44,12 @@ const AboutMe: React.FC = () => {
                         <p className="mt-6 text-white text-center md:text-left text-lg md:text-2xl md:leading-relaxed tracking-wide">
                             from electronics, to CAD, to 3d printing, to sewing, to coding, etc 
                         </p>
+                        <p className="mt-6 text-white text-center md:text-left text-lg md:text-2xl md:leading-relaxed tracking-wide">
+                            and i'm always excited to learn new things and tackle interesting challenges!
+                        </p>
+                        <p className="mt-6 text-white text-center md:text-left text-lg md:text-2xl md:leading-relaxed tracking-wide">
+                            for more information about me, check out my <a href="https://www.linkedin.com/in/zechyeo/" target="_blank" rel="noopener noreferrer" className="text-terminal-green underline">LinkedIn</a> or my <a href="https://github.com/zechyeo" target="_blank" rel="noopener noreferrer" className="text-terminal-green underline">GitHub</a>.
+                        </p>
                     </div>
                 </div>
 
