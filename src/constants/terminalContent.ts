@@ -5,7 +5,6 @@ export const TERMINAL_CONTENT = {
     targetOptions: [
         "About Me",
         "Projects",
-        "Skills",
         "Contact",
     ],
     targetDivider: "--------------------------------------------------",

@@ -48,17 +48,19 @@ const AboutMe: React.FC = () => {
                             and i'm always excited to learn new things and tackle interesting challenges!
                         </p>
                         <p className="mt-6 text-white text-center md:text-left text-lg md:text-2xl md:leading-relaxed tracking-wide">
-                            for more information about me, check out my <a href="https://www.linkedin.com/in/zechyeo/" target="_blank" rel="noopener noreferrer" className="text-terminal-green underline">LinkedIn</a> or my <a href="https://github.com/zechyeo" target="_blank" rel="noopener noreferrer" className="text-terminal-green underline">GitHub</a>.
+                            for more information about me, check out my <a href="https://www.linkedin.com/in/zechyeo/" target="_blank" rel="noopener noreferrer" className="text-terminal-green underline">LinkedIn</a>, <a href="https://github.com/zechyeo" target="_blank" rel="noopener noreferrer" className="text-terminal-green underline">GitHub</a> or <a href="/Resume.pdf" download className="text-terminal-green underline">download my resume</a>.
                         </p>
                     </div>
                 </div>
 
                 {/* Right Side: Retro Window with Image */}
-                <ImageFrame 
-                    src={imagePath} 
-                    alt="Zech" 
-                    className="mt-8 md:mt-0"
-                />
+                <div>
+                    <ImageFrame
+                        src={imagePath}
+                        alt="Zech"
+                        className="mt-8 md:mt-0"
+                    />
+                </div>
             </div>
         </div>
     );

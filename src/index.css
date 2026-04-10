@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=VT323&display=swap");
 @import "tailwindcss";
 
-@import "./assets/chromatic.css";
+@import "./assets/styles/chromatic.css";
 
 :root {
   font-family: "VT323", monospace;
@@ -94,4 +94,15 @@ body {
     rgba(0, 0, 0, 0.1) 50%
   );
   background-size: 100% 4px;
+}
+
+@utility scrollbar-hidden {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }

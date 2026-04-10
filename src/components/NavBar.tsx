@@ -27,7 +27,7 @@ const Header: React.FC = () => {
     return (
         <>
         {/* Fixed Header */}
-        <header className="fixed top-0 left-0 w-full z-30 flex flex-col ">
+        <header className="fixed top-0 left-0 w-full z-15 flex flex-col bg-black ">
             {/* Responsive ASCII box border header */}
             <pre className="w-full text-terminal-green text-xs md:text-sm select-none leading-none mb-0 overflow-hidden whitespace-pre m-0 p-0">
                 {asciiBorder}
